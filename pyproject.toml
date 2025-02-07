@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "bookstore"
+version = "0.1.0"
+description = "Bookstore API"
+authors = ["Clovis <clovis@example.com>"]
+readme = "README.md"
+license = "MIT"  # Adicione uma licença, se aplicável
+repository = "https://github.com/seu-usuario/bookstore"  # Opcional
+homepage = "https://github.com/seu-usuario/bookstore"  # Opcional
+
+[tool.poetry.dependencies]
+python = ">=3.12"
+django = "^5.1.4"
+djangorestframework = "^3.15.2"
+django-extensions = "^3.2.3"
+django-debug-toolbar = "^5.0.1"
+psycopg2-binary = "^2.9.10"
+factory-boy = "^3.3.1"
+pytest = "^8.3.4"
+flake8 = "^7.1.1"
+
+[tool.poetry.dev-dependencies]
+black = "^24.1.0"  # Formatação de código
+flake8 = "^7.0.0"  # Linting
+pytest-django = "^4.7.0"  # Testes com Django
+ipython = "^8.22.0"  # Console interativo
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
