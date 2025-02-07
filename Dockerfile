@@ -59,7 +59,7 @@ RUN poetry install --no-dev
 
 # copy the rest of the code
 WORKDIR /app
-COPY . /app/  # Ensure the destination ends with '/'
+COPY . /app  # Ensure the destination ends with '/'
 
 # expose the port the app runs on
 EXPOSE 8000
