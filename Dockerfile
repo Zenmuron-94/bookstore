@@ -38,19 +38,21 @@ RUN apt-get update \
         # deps for building python deps
         build-essential \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/*  # Remove apt cache to reduce image size
 
 # install poetry - respects $POETRY_VERSION & $POETRY_HOME
-RUN pip install poetry==$POETRY_VERSION
+RUN pip install --no-cache-dir poetry==$POETRY_VERSION  # Avoid pip cache
 
 # install postgres dependencies inside of Docker
 RUN apt-get update \
     && apt-get -y install libpq-dev gcc \
-    && pip install psycopg2
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*  # Clean apt cache after installation
+RUN pip install --no-cache-dir psycopg2  # Avoid pip cache
 
 # copy project requirement files here to ensure they will be cached.
 WORKDIR $PYSETUP_PATH
-COPY poetry.lock pyproject.toml ./
+COPY poetry.lock pyproject.toml ./  # Only copy dependency files first to leverage caching
 
 # install runtime deps - uses $POETRY_VIRTUALENVS_IN_PROJECT internally
 RUN poetry install --no-dev
