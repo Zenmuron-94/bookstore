@@ -52,7 +52,7 @@ RUN pip install --no-cache-dir psycopg2  # Avoid pip cache
 
 # copy project requirement files here to ensure they will be cached.
 WORKDIR $PYSETUP_PATH
-COPY poetry.lock pyproject.toml ./  # Only copy dependency files first to leverage caching
+COPY poetry.lock pyproject.toml /opt/pysetup/
 
 # install runtime deps - uses $POETRY_VIRTUALENVS_IN_PROJECT internally
 RUN poetry install --no-dev
