@@ -2,29 +2,36 @@
 name = "bookstore"
 version = "0.1.0"
 description = "Bookstore API"
-authors = ["Clovis <clovis@example.com>"]
+authors = ["Ramon Galdino da Silva <ramonofcgta@gmail.com>"]
 readme = "README.md"
-license = "MIT"  # Adicione uma licença, se aplicável
-repository = "https://github.com/seu-usuario/bookstore"  # Opcional
-homepage = "https://github.com/seu-usuario/bookstore"  # Opcional
 
 [tool.poetry.dependencies]
-python = ">=3.10"
-django = "^5.1.4"
-djangorestframework = "^3.15.2"
-django-extensions = "^3.2.3"
-django-debug-toolbar = "^5.0.1"
-psycopg2-binary = "^2.9.10"
-factory-boy = "^3.3.1"
-pytest = "^8.3.4"
+python = "^3.10"
+asgiref = "3.8.1"
+colorama = "0.4.6"
+django = "^4.0.6"
+django-debug-toolbar = "3.2.4"
+django-extensions = "3.2.3"
+djangorestframework = "3.15.2"
+factory-boy = "3.3.1" 
+faker = "24.8.0"
+iniconfig = "2.0.0"
+packaging = "24.0"
+pluggy = "1.5.0"
+psycopg2 = "2.9.10"
+pytest = "8.3.4"
+python-dateutil = "2.9.0.post0"
+six = "1.16.0"
+sqlparse = "0.4.4"
+tzdata = "2024.1"
 flake8 = "^7.1.1"
+gitpython = "^3.1.44"
 
-[tool.poetry.dev-dependencies]
-black = "^24.1.0"  # Formatação de código
-flake8 = "^7.0.0"  # Linting
-pytest-django = "^4.7.0"  # Testes com Django
-ipython = "^8.22.0"  # Console interativo
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.4"
+factory-boy = "^3.3.1"
 
 [build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
+requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
