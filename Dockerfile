@@ -1,7 +1,7 @@
 # `python-base` sets up all our shared environment variables
-FROM python:3.12-slim as python-base
+FROM python:3.10-slim as python-base
 
-# python
+    # python
 ENV PYTHONUNBUFFERED=1 \
     # prevents python creating .pyc files
     PYTHONDONTWRITEBYTECODE=1 \
@@ -13,7 +13,7 @@ ENV PYTHONUNBUFFERED=1 \
     \
     # poetry
     # https://python-poetry.org/docs/configuration/#using-environment-variables
-    POETRY_VERSION=1.8.4 \
+    POETRY_VERSION=2.0.1 \
     # make poetry install to this location
     POETRY_HOME="/opt/poetry" \
     # make poetry create the virtual environment in the project's root
@@ -27,42 +27,42 @@ ENV PYTHONUNBUFFERED=1 \
     PYSETUP_PATH="/opt/pysetup" \
     VENV_PATH="/opt/pysetup/.venv"
 
+
 # prepend poetry and venv to path
 ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"
 
-# install system dependencies
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
         # deps for installing poetry
         curl \
         # deps for building python deps
-        build-essential \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*  # Remove apt cache to reduce image size
+        build-essential
 
 # install poetry - respects $POETRY_VERSION & $POETRY_HOME
-RUN pip install --no-cache-dir poetry==$POETRY_VERSION  # Avoid pip cache
+RUN pip install poetry==$POETRY_VERSION
 
 # install postgres dependencies inside of Docker
 RUN apt-get update \
     && apt-get -y install libpq-dev gcc \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*  # Clean apt cache after installation
-RUN pip install --no-cache-dir psycopg2  # Avoid pip cache
+    && rm -rf /var/lib/apt/lists/*
 
 # copy project requirement files here to ensure they will be cached.
 WORKDIR $PYSETUP_PATH
-COPY poetry.lock pyproject.toml /opt/pysetup/
+COPY poetry.lock pyproject.toml ./
+COPY README.md /opt/pysetup/README.md
 
 # install runtime deps - uses $POETRY_VIRTUALENVS_IN_PROJECT internally
-RUN poetry install --no-dev
+RUN poetry install --without dev --no-root
 
-# copy the rest of the code
+
+# quicker install as runtime deps are already installed
+# RUN poetry install
+RUN pip install psycopg2
+
 WORKDIR /app
-COPY . /app  # Ensure the destination ends with '/'
 
-# expose the port the app runs on
+COPY . /app/
+
 EXPOSE 8000
 
-# activate the virtual environment and run the server
-CMD ["poetry", "run", "python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
